@@ -3,6 +3,7 @@ using PierwszePodejscieDoQuizu.Database.Entities;
 using PierwszePodejscieDoQuizu.ViewModel.Base;
 using PierwszePodejscieDoQuizu.ViewModel.Controls;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PierwszePodejscieDoQuizu.ViewModel
@@ -28,13 +29,34 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         public bool IsCorrect3 { get; set; }
         public bool IsCorrect4 { get; set; }
 
+        private Visibility _gridVisibility;
+        public Visibility GridVisibility
+        {
+            get { return _gridVisibility; }
+            set
+            {
+                _gridVisibility = value;
+                OnPropertyChanged(nameof(GridVisibility));
+            }
+        }
 
-        public string WarningText { get; set; }
+        private string _warningText;
+
+        public string WarningText
+        {
+            get { return _warningText; }
+            set 
+            { 
+                _warningText = value;
+                OnPropertyChanged(nameof(WarningText));
+            }
+        }
 
 
         public ICommand AddNewQuizCommand { get; set; }
         public ICommand AddNewQuestionCommand { get; set; }
         public ICommand SaveToDatabaseCommand { get; set; }
+        public ICommand ToggleGridVisibilityCommand { get; set; }
 
 
         public MainWindowViewModel()
@@ -46,6 +68,9 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             Quiz = new QuizViewModel();
             Quizzes = new ObservableCollection<QuizViewModel>();
             Questions = new ObservableCollection<QuestionViewModel>();
+
+            ToggleGridVisibilityCommand = new RelayCommand(ToggleGridVisibility);
+            GridVisibility = Visibility.Collapsed; // Początkowa widoczność siatki
         }
 
 
@@ -53,7 +78,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         private void AddNewQuestion()
         {
             WarningText = "";
-            OnPropertyChanged(nameof(WarningText));
+            /*OnPropertyChanged(nameof(WarningText));*/
 
             var sampleAnswers = new ObservableCollection<AnswerViewModel>
     {
@@ -103,13 +128,14 @@ namespace PierwszePodejscieDoQuizu.ViewModel
 
             Quizzes.Add(Quiz);
             OnPropertyChanged(nameof(Quizzes));
+            GridVisibility = Visibility.Visible;
         }
         private void SaveToDatabase()
         {  
             if (Quiz == null || !Quiz.Questions.Any())
             {
                 WarningText = "Quiz must have at least one question.";
-                OnPropertyChanged(nameof(WarningText));
+                /*OnPropertyChanged(nameof(WarningText));*/
                 return;
             }
 
@@ -139,6 +165,16 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             OnPropertyChanged(nameof(WarningText));
         }
 
-
+        private void ToggleGridVisibility()
+        {
+            if (GridVisibility == Visibility.Visible)
+            {
+                GridVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                GridVisibility = Visibility.Visible;
+            }
+        }
     }
 }

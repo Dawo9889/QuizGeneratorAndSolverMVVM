@@ -67,13 +67,20 @@
                     Height="80"
                     Text="{Binding NewQuizCategory}"
                     MaxLength="120"/>
+                
             </StackPanel>
-            
 
+            <TextBlock Grid.Row="2"
+    Visibility="Visible"
+    Margin="10, 10, 105, 10"
+    FontStyle="Italic"
+    Foreground="Red"
+    TextWrapping="Wrap"
+    Text="{Binding WarningText, Mode=TwoWay}"/>
 
         </Grid>
 
-        <Grid
+        <Grid Visibility="{Binding GridVisibility}"
     x:Name="CurrentQuestion"
     Grid.Column="1"
            >
@@ -146,18 +153,13 @@
                 </Grid>
 
 
-                <TextBlock 
-                    Margin="10, 10, 105, 10"
-                    FontStyle="Italic"
-                    Foreground="Red"
-                    TextWrapping="Wrap"
-                    Text="{Binding WarningText, Mode=TwoWay}"/>
+                
 
 
             </StackPanel>
         </Grid>
 
-        <Grid 
+        <Grid Visibility="{Binding GridVisibility}"
             x:Name="QuizEditor" 
             Grid.Column="2" 
             >
