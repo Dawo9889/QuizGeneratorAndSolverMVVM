@@ -1,11 +1,8 @@
-﻿using PierwszePodejscieDoQuizu.ViewModel.Base;
+﻿using PierwszePodejscieDoQuizu.Database;
+using PierwszePodejscieDoQuizu.Database.Entities;
+using PierwszePodejscieDoQuizu.ViewModel.Base;
 using PierwszePodejscieDoQuizu.ViewModel.Controls;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PierwszePodejscieDoQuizu.ViewModel
@@ -51,23 +48,20 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             Questions = new ObservableCollection<QuestionViewModel>();
         }
 
-        private void SaveToDatabase()
-        {
-            throw new NotImplementedException();
-        }
+
 
         private void AddNewQuestion()
         {
             WarningText = "";
             OnPropertyChanged(nameof(WarningText));
 
-            var sampleAnswers = new List<AnswerViewModel>
-            {
-                new AnswerViewModel { Content = NewAnswer0, IsCorrect = IsCorrect0 },
-                new AnswerViewModel { Content = NewAnswer1, IsCorrect = IsCorrect1 },
-                new AnswerViewModel { Content = NewAnswer2, IsCorrect = IsCorrect2 },
-                new AnswerViewModel { Content = NewAnswer3, IsCorrect = IsCorrect3 }
-            };
+            var sampleAnswers = new ObservableCollection<AnswerViewModel>
+    {
+        new AnswerViewModel { Content = NewAnswer0, IsCorrect = IsCorrect0 },
+        new AnswerViewModel { Content = NewAnswer1, IsCorrect = IsCorrect1 },
+        new AnswerViewModel { Content = NewAnswer2, IsCorrect = IsCorrect2 },
+        new AnswerViewModel { Content = NewAnswer3, IsCorrect = IsCorrect3 }
+    };
             if (!sampleAnswers.Any(answer => answer.IsCorrect))
             {
                 WarningText = "At least one answer must be marked as correct.";
@@ -81,10 +75,9 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 Answers = sampleAnswers
             };
 
-            
             Quiz.Questions.Add(newQuestion);
-
-            
+            WarningText = "Question added";
+            OnPropertyChanged(nameof(WarningText));
             OnPropertyChanged(nameof(Quiz.Questions));
         }
 
@@ -105,8 +98,47 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 Title = NewQuizTitle,
                 Description = NewQuizDescription,
                 Category = NewQuizCategory,
-               
+                Questions = new ObservableCollection<QuestionViewModel>()
             };
+
+            Quizzes.Add(Quiz);
+            OnPropertyChanged(nameof(Quizzes));
         }
+        private void SaveToDatabase()
+        {  
+            if (Quiz == null || !Quiz.Questions.Any())
+            {
+                WarningText = "Quiz must have at least one question.";
+                OnPropertyChanged(nameof(WarningText));
+                return;
+            }
+
+            using (var context = new QuizDbContext())
+            {
+                var quiz = new Quiz
+                {
+                    Title = Quiz.Title,
+                    Description = Quiz.Description,
+                    Category = Quiz.Category,
+                    Questions = Quiz.Questions.Select(q => new Question
+                    {
+                        Content = q.Content,
+                        Answers = q.Answers.Select(a => new Answer
+                        {
+                            Content = a.Content,
+                            IsCorrect = a.IsCorrect
+                        }).ToList()
+                    }).ToList()
+                };
+
+                context.Quizzes.Add(quiz);
+                context.SaveChanges();
+            }
+
+            WarningText = "Quiz successfully saved to the database.";
+            OnPropertyChanged(nameof(WarningText));
+        }
+
+
     }
 }
