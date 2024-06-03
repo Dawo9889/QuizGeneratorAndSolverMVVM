@@ -97,6 +97,7 @@ namespace QuizSolution.ViewModel
                 AnswerButtonVisibility?.Invoke();
                 ResetButtonColors();
                 LoadQuestions();
+                if (_questionAndAnswersList.Count == 1) { BeforeQuizCompleted?.Invoke(); }
             }
             else
             {
