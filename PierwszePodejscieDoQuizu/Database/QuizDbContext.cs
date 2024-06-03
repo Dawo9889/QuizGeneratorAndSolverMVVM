@@ -20,7 +20,7 @@ namespace PierwszePodejscieDoQuizu.Database
             base.OnConfiguring(optionsBuilder);
 
             string currentDirectory = Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.Parent.FullName;
             string databasePath = Path.Combine(projectDirectory, "Quizzes.sqlite");
 
             optionsBuilder.UseSqlite($"Filename={databasePath}");
