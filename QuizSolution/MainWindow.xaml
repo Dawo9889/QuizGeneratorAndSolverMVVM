@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="Quiz" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,8 +15,7 @@
             <ColumnDefinition Width="Auto" MinWidth="125"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="DOJEBANY QUIZ!!!!" Margin="10,10,10,10"/>
-        <TextBlock x:Name="TimerTextBlock" Grid.Row="0" Grid.Column="1" Text="00:00:00" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="QUIZ!" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <ListBox x:Name="QuizListBox" ItemsSource="{Binding Quizzes}" SelectedItem="{Binding SelectedQuiz}" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -24,6 +23,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+            <TextBlock x:Name="QuestionNrTextBlock" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="20">
+        <Run Text="Pytanie nr"/>
+        <Run Text="{Binding CurrentQuestionForFrontIndex}"/>
+        <Run Text="/"/>
+        <Run Text="{Binding NumberOfQuestions}"/>
+            </TextBlock>
+        </StackPanel>
+
         <Button x:Name="SelectQuizButton" Grid.Row="2" Grid.Column="0" Content="Rozpocznij" Command="{Binding SelectQuizCommand}" CommandParameter="{Binding SelectedQuiz}" Margin="10,10,10,10" Click="SelectQuizButton_Click"/>
 
         <StackPanel x:Name="stackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10" RenderTransformOrigin="0.5,0.5">
@@ -36,35 +45,53 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
 
-            <TextBlock x:Name="QuestionTextBlock" Text="{Binding CurrentQuestionAndAnswers.Question.Content}" Margin="10" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+            <TextBlock x:Name="QuestionTextBlock" Text="{Binding CurrentQuestionAndAnswers.Question.Content}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+             
             <Button x:Name="answerButton1" Content="{Binding CurrentQuestionAndAnswers.Answers[0].Content}" 
                     Background="{Binding Button1Color, Mode=TwoWay}"
                     Command="{Binding SelectAnswerCommand}"
                     CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[0].AnswerId}"
                     Margin="0,10,0,10"
-                    Click="Button_Click"/>
+                    Click="Button_Click"
+                    Height="30"/>
             <Button x:Name="answerButton2" Content="{Binding CurrentQuestionAndAnswers.Answers[1].Content}" 
                     Background="{Binding Button2Color, Mode=TwoWay}"
                     Command="{Binding SelectAnswerCommand}"
                     CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[1].AnswerId}"
                     Margin="0,10,0,10"
-                    Click="Button_Click"/>
+                    Click="Button_Click"
+                    Height="30"/>
             <Button x:Name="answerButton3" Content="{Binding CurrentQuestionAndAnswers.Answers[2].Content}" 
                     Background="{Binding Button3Color, Mode=TwoWay}"
                     Command="{Binding SelectAnswerCommand}"
                     CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[2].AnswerId}"
                     Margin="0,10,0,10"
-                    Click="Button_Click"/>
+                    Click="Button_Click"
+                    Height="30"/>
             <Button x:Name="answerButton4" Content="{Binding CurrentQuestionAndAnswers.Answers[3].Content}" 
                     Background="{Binding Button4Color, Mode=TwoWay}"
                     Command="{Binding SelectAnswerCommand}"
                     CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[3].AnswerId}"
                     Margin="0,10,0,10"
-                    Click="Button_Click"/>
+                    Click="Button_Click"
+                    Height="30"/>
         </StackPanel>
-        <StackPanel x:Name="stackPanel2" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,10" Width="212">
-            <Button x:Name="NextQuestionButton" Content="Następne pytanie" Command="{Binding NextQuestionCommand}" Margin="10"/>
-            <Button x:Name="EndQuizButton" Content="Zakoncz Quiz" Command="{Binding ExitQuizCommand}" Margin="10"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" x:Name="stackPanel1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,10" Width="Auto" Height="50">
+                <TextBlock x:Name="TimerTextBlockTitle" Text="Czas:" Margin="10" FontSize="20" FontWeight="Bold"/>
+                <TextBlock x:Name="TimerTextBlock" Text="00:00:00" Margin="10" FontSize="20" FontWeight="Bold" />
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" x:Name="stackPanel2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,10,0,10" Width="Auto" Height="50">
+                <Button Width="100" Height="30"  x:Name="NextQuestionButton" Content="Następne pytanie" Command="{Binding NextQuestionCommand}" Margin="10" HorizontalAlignment="Center"/>
+                <Button Width="100" Height="30" x:Name="EndQuizButton" Content="Zakoncz Quiz" Command="{Binding ExitQuizCommand}" Margin="10" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

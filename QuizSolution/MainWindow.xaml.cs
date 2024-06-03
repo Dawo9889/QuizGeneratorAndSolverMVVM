@@ -28,6 +28,8 @@ namespace QuizSolution
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(100);
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             TimerTextBlock.Visibility = Visibility.Collapsed;
+            TimerTextBlockTitle.Visibility = Visibility.Collapsed;
+            QuestionNrTextBlock.Visibility = Visibility.Collapsed;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -67,6 +69,8 @@ namespace QuizSolution
                 _viewModel.ElapsedTime = _elapsedTime;
                 TimerTextBlock.Text = "00:00:00";
                 TimerTextBlock.Visibility = Visibility.Collapsed;
+                TimerTextBlockTitle.Visibility = Visibility.Collapsed;
+                QuestionNrTextBlock.Visibility = Visibility.Collapsed;
             });
         }
 
@@ -103,6 +107,8 @@ namespace QuizSolution
             NextQuestionButton.Visibility = Visibility.Visible;
             EndQuizButton.Visibility = Visibility.Visible;
             TimerTextBlock.Visibility = Visibility.Visible;
+            TimerTextBlockTitle.Visibility = Visibility.Visible;
+            QuestionNrTextBlock.Visibility = Visibility.Visible;
         }
     }
 }
