@@ -91,7 +91,15 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         private void AddNewQuestion()
         {
             WarningText = "";
-            /*OnPropertyChanged(nameof(WarningText));*/
+
+            // Sprawdzenie, czy wszystkie pola odpowiedzi są wypełnione
+            if (string.IsNullOrWhiteSpace(NewAnswer0) || string.IsNullOrWhiteSpace(NewAnswer1) ||
+                string.IsNullOrWhiteSpace(NewAnswer2) || string.IsNullOrWhiteSpace(NewAnswer3))
+            {
+                WarningText = "All answer fields must be filled out.";
+                OnPropertyChanged(nameof(WarningText));
+                return;
+            }
 
             var sampleAnswers = new ObservableCollection<AnswerViewModel>
     {
@@ -100,6 +108,8 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         new AnswerViewModel { Content = NewAnswer2, IsCorrect = IsCorrect2 },
         new AnswerViewModel { Content = NewAnswer3, IsCorrect = IsCorrect3 }
     };
+
+            // Sprawdzenie, czy przynajmniej jedna odpowiedź jest oznaczona jako poprawna
             if (!sampleAnswers.Any(answer => answer.IsCorrect))
             {
                 WarningText = "At least one answer must be marked as correct.";
