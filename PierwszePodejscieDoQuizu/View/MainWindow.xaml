@@ -47,7 +47,8 @@
                 
              <Button 
               Content="Stwórz nowy quiz"
-              Command="{Binding AddNewQuizCommand}"/>
+              Command="{Binding AddNewQuizCommand}"
+              IsEnabled="{Binding IsFieldsEnabled}"/>
                 
 
                 <Label Content="Nazwa quizu:"/>
@@ -55,29 +56,37 @@
                 Margin="0, 0, 0, 10"
                 Height="80"
                 Text="{Binding NewQuizTitle}"
-                MaxLength="120"/>
+                MaxLength="120"
+                IsEnabled="{Binding IsFieldsEnabled}"/>
                 <Label Content="Opis quizu:"/>
                 <TextBox
                 Height="160"
                 Text="{Binding NewQuizDescription}"
-                MaxLength="240"/>
+                MaxLength="240"
+                IsEnabled="{Binding IsFieldsEnabled}"/>
                 <Label Content="Kategoria quizu:"/>
                 <TextBox
                     Margin="0, 0, 0, 10"
                     Height="80"
                     Text="{Binding NewQuizCategory}"
-                    MaxLength="120"/>
+                    MaxLength="120"
+                    IsEnabled="{Binding IsFieldsEnabled}"/>
                 
             </StackPanel>
 
-            <TextBlock Grid.Row="2"
-    Visibility="Visible"
-    Margin="10, 10, 105, 10"
-    FontStyle="Italic"
-    Foreground="Red"
-    TextWrapping="Wrap"
-    Text="{Binding WarningText, Mode=TwoWay}"/>
+            <TextBlock x:Name="warningTextBlock"
+                   Grid.Row="2"
+                   Visibility="Visible"
+                   Margin="10, 10, 105, 10"
+                   FontStyle="Italic"
+                   Foreground="Red"
+                   TextWrapping="Wrap"
+                   Text="{Binding WarningText, Mode=TwoWay}"/>
 
+
+
+
+            
         </Grid>
 
         <Grid Visibility="{Binding GridVisibility}"
@@ -169,7 +178,18 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <TextBlock TextAlignment="Center" FontSize="15" Margin="0,5">Twoj Quiz zawiera takie pytania:</TextBlock>
+                <ItemsControl ItemsSource="{Binding Quiz.Questions}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Content}" TextAlignment="Center" FontSize="15" Margin="0,5"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
 
             <StackPanel
                 Grid.Row="1">

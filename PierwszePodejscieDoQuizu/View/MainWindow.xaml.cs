@@ -22,6 +22,6 @@ namespace PierwszePodejscieDoQuizu
             InitializeComponent();
             DataContext = new MainWindowViewModel();
         }
-
+        
     }
 }

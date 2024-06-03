@@ -2,12 +2,14 @@
 using PierwszePodejscieDoQuizu.Database.Entities;
 using PierwszePodejscieDoQuizu.ViewModel.Base;
 using PierwszePodejscieDoQuizu.ViewModel.Controls;
+using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PierwszePodejscieDoQuizu.ViewModel
 {
+    [AddINotifyPropertyChangedInterface]
     public class MainWindowViewModel : Base.BaseViewModel
     {
         public ObservableCollection<QuizViewModel> Quizzes { get; set; }
@@ -28,6 +30,8 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         public bool IsCorrect2 { get; set; }
         public bool IsCorrect3 { get; set; }
         public bool IsCorrect4 { get; set; }
+
+
 
         private Visibility _gridVisibility;
         public Visibility GridVisibility
@@ -51,7 +55,16 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 OnPropertyChanged(nameof(WarningText));
             }
         }
-
+        private bool _isFieldsEnabled = true;
+        public bool IsFieldsEnabled
+        {
+            get { return _isFieldsEnabled; }
+            set
+            {
+                _isFieldsEnabled = value;
+                OnPropertyChanged(nameof(IsFieldsEnabled));
+            }
+        }
 
         public ICommand AddNewQuizCommand { get; set; }
         public ICommand AddNewQuestionCommand { get; set; }
@@ -104,6 +117,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             WarningText = "Question added";
             OnPropertyChanged(nameof(WarningText));
             OnPropertyChanged(nameof(Quiz.Questions));
+            ClearQuestionAndAnswers();
         }
 
         private void AddNewQuiz()
@@ -129,13 +143,17 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             Quizzes.Add(Quiz);
             OnPropertyChanged(nameof(Quizzes));
             GridVisibility = Visibility.Visible;
+            IsFieldsEnabled = false;
         }
+
+
+
+
         private void SaveToDatabase()
-        {  
+        {
             if (Quiz == null || !Quiz.Questions.Any())
             {
                 WarningText = "Quiz must have at least one question.";
-                /*OnPropertyChanged(nameof(WarningText));*/
                 return;
             }
 
@@ -162,7 +180,13 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             }
 
             WarningText = "Quiz successfully saved to the database.";
-            OnPropertyChanged(nameof(WarningText));
+            Quizzes.Clear(); // Resetujemy listę quizów
+            OnPropertyChanged(nameof(Quizzes)); // Powiadamiamy o zmianie listy quizów
+            ClearQuestionAndAnswers(); // Resetujemy właściwości pytania i odpowiedzi
+            GridVisibility = Visibility.Collapsed;
+            OnPropertyChanged(nameof(GridVisibility)); // Powiadamiamy o zmianie widoczności siatki
+            IsFieldsEnabled = true;
+
         }
 
         private void ToggleGridVisibility()
@@ -176,5 +200,19 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 GridVisibility = Visibility.Visible;
             }
         }
+
+        public void ClearQuestionAndAnswers()
+        {
+            NewQuestionContent = string.Empty;
+            NewAnswer0 = string.Empty;
+            IsCorrect0 = false;
+            IsCorrect1 = false;
+            IsCorrect2 = false;
+            IsCorrect3 = false;
+            NewAnswer1 = string.Empty;
+            NewAnswer2 = string.Empty;
+            NewAnswer3 = string.Empty;
+        }
+
     }
 }
