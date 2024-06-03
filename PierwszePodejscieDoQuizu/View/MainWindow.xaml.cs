@@ -1,4 +1,5 @@
-﻿using PierwszePodejscieDoQuizu.ViewModel;
+﻿using PierwszePodejscieDoQuizu.View;
+using PierwszePodejscieDoQuizu.ViewModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +23,12 @@ namespace PierwszePodejscieDoQuizu
             InitializeComponent();
             DataContext = new MainWindowViewModel();
         }
-        
+        private void NavigateToDeleteWindows_Click(object sender, RoutedEventArgs e)
+        {
+            // Tutaj umieść kod nawigacji do DeleteWindows
+            DeleteWindows deleteWindows = new DeleteWindows();
+            deleteWindows.Show(); // Pokaż nowe okno DeleteWindows
+            this.Close(); // Zamknij obecne okno MainWindow
+        }
     }
 }

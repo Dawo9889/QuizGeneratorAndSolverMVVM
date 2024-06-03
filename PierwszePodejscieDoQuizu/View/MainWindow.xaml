@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PierwszePodejscieDoQuizu"
         xmlns:vm ="clr-namespace:PierwszePodejscieDoQuizu.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1200">
+        Title="MainWindow" Height="700" MinHeight="700" Width="1200" MinWidth="1200">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -36,6 +36,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                
             </Grid.RowDefinitions>
 
             
@@ -45,10 +48,7 @@
             x:Name="GeneralInformation"
             Grid.Row="1">
                 
-             <Button 
-              Content="Stwórz nowy quiz"
-              Command="{Binding AddNewQuizCommand}"
-              IsEnabled="{Binding IsFieldsEnabled}"/>
+            
                 
 
                 <Label Content="Nazwa quizu:"/>
@@ -82,11 +82,15 @@
                    Foreground="Red"
                    TextWrapping="Wrap"
                    Text="{Binding WarningText, Mode=TwoWay}"/>
+            <Button Grid.Row="3"
+                Content="Stwórz nowy quiz"
+                Command="{Binding AddNewQuizCommand}"
+                IsEnabled="{Binding IsFieldsEnabled}"/>
+            <Button Grid.Row="4" Content="Przejdź do DeleteWindows" Click="NavigateToDeleteWindows_Click" />
 
 
 
 
-            
         </Grid>
 
         <Grid Visibility="{Binding GridVisibility}"

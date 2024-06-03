@@ -1,5 +1,6 @@
 ﻿using PierwszePodejscieDoQuizu.Database;
 using PierwszePodejscieDoQuizu.Database.Entities;
+using PierwszePodejscieDoQuizu.ViewModel;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace PierwszePodejscieDoQuizu
 
             var database = new QuizDbContext();
             database.Database.EnsureCreated();
-
+           
         }
     }
     
