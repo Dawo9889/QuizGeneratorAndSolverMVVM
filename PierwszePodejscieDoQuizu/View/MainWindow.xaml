@@ -38,6 +38,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 
             </Grid.RowDefinitions>
 
@@ -86,7 +87,8 @@
                 Content="Stwórz nowy quiz"
                 Command="{Binding AddNewQuizCommand}"
                 IsEnabled="{Binding IsFieldsEnabled}"/>
-            <Button Grid.Row="4" Content="Przejdź do DeleteWindows" Click="NavigateToDeleteWindows_Click" />
+            <Button Grid.Row="4" Content="Przejdź do Usuwania" Click="NavigateToDeleteWindows_Click" />
+            <Button Grid.Row="5" Content="Przejdź do Edycji" Click="NavigateToEditWindow_Click" />
 
 
 
@@ -202,7 +204,8 @@
                     Command="{Binding AddNewQuestionCommand}"/>
                 <Button
                     Content="ZAPISZ DO BAZY"
-                    Command="{Binding SaveToDatabaseCommand}"/>
+                    Command="{Binding SaveToDatabaseCommand}"
+                    />
             </StackPanel>
         </Grid>
     </Grid>

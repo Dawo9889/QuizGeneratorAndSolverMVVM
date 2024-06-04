@@ -30,42 +30,10 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         public bool IsCorrect2 { get; set; }
         public bool IsCorrect3 { get; set; }
         public bool IsCorrect4 { get; set; }
-
-
-
-        private Visibility _gridVisibility;
-        public Visibility GridVisibility
-        {
-            get { return _gridVisibility; }
-            set
-            {
-                _gridVisibility = value;
-                OnPropertyChanged(nameof(GridVisibility));
-            }
-        }
-
-        private string _warningText;
-
-        public string WarningText
-        {
-            get { return _warningText; }
-            set 
-            { 
-                _warningText = value;
-                OnPropertyChanged(nameof(WarningText));
-            }
-        }
-        private bool _isFieldsEnabled = true;
-        public bool IsFieldsEnabled
-        {
-            get { return _isFieldsEnabled; }
-            set
-            {
-                _isFieldsEnabled = value;
-                OnPropertyChanged(nameof(IsFieldsEnabled));
-            }
-        }
-
+        public bool IsFieldsEnabled { get; set; } = true;
+        public Visibility GridVisibility { get; set; }
+        public string WarningText { get; set; }
+      
         public ICommand AddNewQuizCommand { get; set; }
         public ICommand AddNewQuestionCommand { get; set; }
         public ICommand SaveToDatabaseCommand { get; set; }
@@ -83,7 +51,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             Questions = new ObservableCollection<QuestionViewModel>();
 
             ToggleGridVisibilityCommand = new RelayCommand(ToggleGridVisibility);
-            GridVisibility = Visibility.Collapsed; // Początkowa widoczność siatki
+            GridVisibility = Visibility.Collapsed; 
         }
 
 
@@ -96,7 +64,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             if (string.IsNullOrWhiteSpace(NewAnswer0) || string.IsNullOrWhiteSpace(NewAnswer1) ||
                 string.IsNullOrWhiteSpace(NewAnswer2) || string.IsNullOrWhiteSpace(NewAnswer3))
             {
-                WarningText = "All answer fields must be filled out.";
+                WarningText = "Pytanie musi posiadać 4 odpowiedzi!";
                 OnPropertyChanged(nameof(WarningText));
                 return;
             }
@@ -109,10 +77,10 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         new AnswerViewModel { Content = NewAnswer3, IsCorrect = IsCorrect3 }
     };
 
-            // Sprawdzenie, czy przynajmniej jedna odpowiedź jest oznaczona jako poprawna
+    
             if (!sampleAnswers.Any(answer => answer.IsCorrect))
             {
-                WarningText = "At least one answer must be marked as correct.";
+                WarningText = "Przynajmniej jedna odpowiedz musi być oznaczona jako poprawna!";
                 OnPropertyChanged(nameof(WarningText));
                 return;
             }
@@ -124,7 +92,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
             };
 
             Quiz.Questions.Add(newQuestion);
-            WarningText = "Question added";
+            WarningText = "Pytanie dodane";
             OnPropertyChanged(nameof(WarningText));
             OnPropertyChanged(nameof(Quiz.Questions));
             ClearQuestionAndAnswers();
@@ -138,7 +106,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 string.IsNullOrWhiteSpace(NewQuizDescription) ||
                 string.IsNullOrWhiteSpace(NewQuizCategory))
             {
-                WarningText = "All fields must be filled out.";
+                WarningText = "Wszystkie pola musza być wypełnione!";
                 OnPropertyChanged(nameof(WarningText));
                 return;
             }
@@ -163,7 +131,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         {
             if (Quiz == null || !Quiz.Questions.Any())
             {
-                WarningText = "Quiz must have at least one question.";
+                WarningText = "Quiz musi mieć przynajmniej jedno pytanie.";
                 return;
             }
 
@@ -189,13 +157,15 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 context.SaveChanges();
             }
 
-            WarningText = "Quiz successfully saved to the database.";
-            Quizzes.Clear(); // Resetujemy listę quizów
-            OnPropertyChanged(nameof(Quizzes)); // Powiadamiamy o zmianie listy quizów
-            ClearQuestionAndAnswers(); // Resetujemy właściwości pytania i odpowiedzi
+            WarningText = "Pomyślnie zapisano quiz do bazy danych";
+            Quizzes.Clear(); 
+            OnPropertyChanged(nameof(Quizzes)); 
+            ClearQuestionAndAnswers(); 
             GridVisibility = Visibility.Collapsed;
-            OnPropertyChanged(nameof(GridVisibility)); // Powiadamiamy o zmianie widoczności siatki
+            OnPropertyChanged(nameof(GridVisibility)); 
             IsFieldsEnabled = true;
+            ClearQuizInputs();
+
 
         }
 
@@ -210,7 +180,12 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 GridVisibility = Visibility.Visible;
             }
         }
-
+        public void ClearQuizInputs()
+        {
+            NewQuizCategory = string.Empty;
+            NewQuizTitle = string.Empty;
+            NewQuizDescription = string.Empty;
+        }
         public void ClearQuestionAndAnswers()
         {
             NewQuestionContent = string.Empty;
