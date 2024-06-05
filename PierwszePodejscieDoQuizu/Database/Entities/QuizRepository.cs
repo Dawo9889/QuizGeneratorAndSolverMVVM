@@ -36,5 +36,26 @@ namespace PierwszePodejscieDoQuizu.Database.Entities
                 return false;
             }
         }
+        public void UpdateQuestionsAndAnswers(IEnumerable<QuestionAndAnswers> questionAndAnswersList)
+        {
+            foreach (var qa in questionAndAnswersList)
+            {
+                var questionInDb = _context.Questions.FirstOrDefault(q => q.QuestionId == qa.Question.QuestionId);
+                if (questionInDb != null)
+                {
+                    questionInDb.Content = qa.Question.Content;
+                    foreach (var answer in qa.Answers)
+                    {
+                        var answerInDb = _context.Answers.FirstOrDefault(a => a.AnswerId == answer.AnswerId);
+                        if (answerInDb != null)
+                        {
+                            answerInDb.Content = answer.Content;
+                            answerInDb.IsCorrect = answer.IsCorrect;
+                        }
+                    }
+                }
+            }
+            _context.SaveChanges();
+        }
     }
 }

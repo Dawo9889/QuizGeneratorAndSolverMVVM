@@ -12,8 +12,36 @@
     <Window.DataContext>
         <vm:DeleteWindowViewModel/>
     </Window.DataContext>
+    
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="White" Offset="0.0"/>
+            <GradientStop Color="Gray" Offset="1.0"/>
+        </LinearGradientBrush>
+    </Window.Background>
 
-    <Grid Background="#F0F0F0">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Command" Value="{Binding Path=buttonPressed}"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+    </Style>
+        <Style TargetType="ListBox">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Background" Value="Gray"/>
+    </Style>
+    </Window.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
@@ -25,7 +53,7 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding Quizzes}" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" Padding="5" Margin="10">
+        <ListBox ItemsSource="{Binding Quizzes}" Background="White"  Padding="5" Margin="10">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <!-- Ustawienie panelu na StackPanel, aby kwadraty wyświetlały się obok siebie -->
@@ -44,7 +72,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <!-- Border jako kontener dla każdego quizu -->
-                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Margin="5" Padding="10">
+                    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="5" Padding="10">
                         <StackPanel>
                             <TextBlock Text="Tytuł:" FontWeight="Bold"  Margin="5" />
                             <TextBlock Text="{Binding Title}" FontWeight="Bold" TextAlignment="Center" Margin="0 0 5 5" />
@@ -63,7 +91,7 @@
 
         <TextBox Grid.Row="1" Grid.Column="0" Margin="10" Height="30" Text="{Binding QuizIdHelper, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="20" />
 
-        <Button Grid.Column="1" Grid.Row="1" Width="100" Height="30" Content="Usuń" Command="{Binding DeleteQuizCommand}" Margin="10" Background="#007ACC" Foreground="White" BorderThickness="0" />
+        <Button Grid.Column="1" Grid.Row="1" Width="100" Height="30" Content="Usuń" Command="{Binding DeleteQuizCommand}" Margin="10" />
 
         <TextBlock x:Name="warningTextBlock"
                    Grid.Row="2"
@@ -77,6 +105,6 @@
                    Text="{Binding WarningText, Mode=TwoWay}"/>
 
         
-        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Powrót" Click="NavigateToMainWindow_Click" Margin="10" Background="#007ACC" Foreground="White" BorderThickness="0" HorizontalAlignment="Right"/>
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Powrót" Click="NavigateToMainWindow_Click" Margin="10" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

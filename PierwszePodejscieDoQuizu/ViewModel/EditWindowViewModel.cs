@@ -23,37 +23,42 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         private int _currentQuestionIndex;
         private int Score;
         private int _numberOfQuestions;
+        private int _currentQuestionForFrontIndex;
+        public string questionText { get; set; }
+        public string answer1Text { get; set; }
+        public string answer2Text { get; set; }
+        public string answer3Text { get; set; }
+        public string answer4Text { get; set; }
         public int QuestionNumber { get; set; }
         public Action OnQuizCompletedOrQuizNotSelected { get; set; }
         public Action BeforeQuizCompleted { get; set; }
         public Action ResetQuiz { get; set; }
-        public Action AnswerButtonVisibilityCollapsed { get; set; }
-        public Action AnswerButtonVisibility { get; set; }
+        public Action TextBoxesVisibilityCollapsed { get; set; }
+        public Action TextBoxesVisibility { get; set; }
+        public Action ShowInformationAboutEmptyTextBoxes { get; set; }
+        public Action UnLockButton { get; set; }
         public EditWindowViewModel()
         {
-            ResetButtonColors();
             _quizRepository = new QuizRepository();
             LoadQuizzes();
             CurrentQuestionForFrontIndex = 1;
         }
-        private TimeSpan _elapsedTime;
-        public TimeSpan ElapsedTime
+        public bool AnyNullContentInTextBoxes(string questionContent, List<string> answerContents)
         {
-            get { return _elapsedTime; }
-            set
+            if (string.IsNullOrEmpty(questionContent))
             {
-                _elapsedTime = value;
-                OnPropertyChanged(nameof(ElapsedTime));
+                return true; 
             }
-        }
-        public int NumberOfQuestions
-        {
-            get => _numberOfQuestions;
-            set
+
+            foreach (var content in answerContents)
             {
-                _numberOfQuestions = value;
-                OnPropertyChanged();
-            } 
+                if (string.IsNullOrEmpty(content))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public ObservableCollection<Database.Entities.QuestionAndAnswers> QuestionAndAnswersList
@@ -102,7 +107,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 if (_selectQuizCommand == null)
                 {
                     _selectQuizCommand = new RelayCommandForEdit<object>(SelectQuiz);
-                    AnswerButtonVisibilityCollapsed?.Invoke();
+                    TextBoxesVisibilityCollapsed?.Invoke();
                 }
                 return _selectQuizCommand;
             }
@@ -115,8 +120,7 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                Score = 0;
                QuestionNumber = 0;
                CurrentQuestionIndex = 0;
-               AnswerButtonVisibility?.Invoke();
-               ResetButtonColors();
+               TextBoxesVisibility?.Invoke();
                LoadQuestions();
                if (_questionAndAnswersList.Count == 1) { BeforeQuizCompleted?.Invoke(); }
             }
@@ -211,8 +215,6 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 {
                     SelectedAnswers.Add(selectedAnswer);
                 }
-
-                UpdateButtonColors();
             }
         }
         private ICommand _nextQuestionCommand;
@@ -239,40 +241,32 @@ namespace PierwszePodejscieDoQuizu.ViewModel
                 return _exitQuizCommand;
             }
         }
+
+        public int NumberOfQuestions
+        {
+            get => _numberOfQuestions;
+            set
+            {
+                _numberOfQuestions = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void NextQuestion(object parameter)
         {
-            var correctAnswers = CurrentQuestionAndAnswers.Answers.Where(a => a.IsCorrect).ToList();
-            bool allCorrectSelected = correctAnswers.All(ca => SelectedAnswers.Contains(ca));
-            bool onlyCorrectSelected = SelectedAnswers.All(sa => correctAnswers.Contains(sa));
-
-            if(SelectedAnswers.Count!=0)
+            if (CurrentQuestionIndex < _questionAndAnswersList.Count - 1)
             {
-                if (allCorrectSelected && onlyCorrectSelected)
+                CurrentQuestionIndex++;
+                CurrentQuestionForFrontIndex++;
+                CurrentQuestionAndAnswers = _questionAndAnswersList[CurrentQuestionIndex];
+                if (CurrentQuestionIndex == _questionAndAnswersList.Count - 1)
                 {
-                    Score++;
-                }
-
-                SelectedAnswers.Clear();
-                
-                if (CurrentQuestionIndex < _questionAndAnswersList.Count - 1)
-                {
-                    CurrentQuestionIndex++;
-                    CurrentQuestionForFrontIndex++;
-                    CurrentQuestionAndAnswers = _questionAndAnswersList[CurrentQuestionIndex];
-                    ResetButtonColors();
-                    if (CurrentQuestionIndex == _questionAndAnswersList.Count - 1)
-                    {
-                        BeforeQuizCompleted?.Invoke();
-                    }
-                }
-                else
-                {
-                    ExitQuiz(1);
+                    BeforeQuizCompleted?.Invoke();
                 }
             }
             else
             {
-                anyAnswerWasClicked();
+                ExitQuiz(1);
             }
 
         }
@@ -280,85 +274,35 @@ namespace PierwszePodejscieDoQuizu.ViewModel
         {
             if (CurrentQuestionIndex < _questionAndAnswersList.Count - 1)
             {
-                var Result = MessageBox.Show("Czy jestes pewny, że chcesz zakończyć ten quiz?", "Jesteś pewny?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var Result = MessageBox.Show("Czy jestes pewny, że chcesz zakończyć edycje quizu?", "Jesteś pewny?", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (Result == MessageBoxResult.Yes)
                 {
                     OnQuizCompletedOrQuizNotSelected?.Invoke();
-                    ShowResult();
                     ResetQuiz?.Invoke();
-                    AnswerButtonVisibilityCollapsed?.Invoke();
+                    TextBoxesVisibilityCollapsed?.Invoke();
                 }
             }
             else
             {
                 OnQuizCompletedOrQuizNotSelected?.Invoke();
-                ShowResult();
                 ResetQuiz?.Invoke();
-                AnswerButtonVisibilityCollapsed?.Invoke();
+                TextBoxesVisibilityCollapsed?.Invoke();
             }
-            
+            UpdateQuestionsAndAnswersInDatabase();
+
         }
-        private void UpdateButtonColors()
+        public void UpdateQuestionsAndAnswersInDatabase()
         {
-            Button1Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[0]) ? "Green" : "LightGray";
-            Button2Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[1]) ? "Green" : "LightGray";
-            Button3Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[2]) ? "Green" : "LightGray";
-            Button4Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[3]) ? "Green" : "LightGray";
-        }
-        private void ShowResult()
-        {
-            string message = $"Twój wynik to: {Score}.\nA Twój czas wykonywania testu wynosił: {ElapsedTime.ToString(@"mm\:ss\:ff")}";
-;
-            MessageBox.Show(message, "Wynik Quizu", MessageBoxButton.OK, MessageBoxImage.Information);
-            OnQuizCompletedOrQuizNotSelected?.Invoke();
-        }
-        private void anyAnswerWasClicked()
-        {
-            string message ="Musisz zaznaczyć przynajmniej jedną odpowiedź";
-;
-            MessageBox.Show(message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (QuestionAndAnswersList != null && QuestionAndAnswersList.Any())
+            {
+                _quizRepository.UpdateQuestionsAndAnswers(QuestionAndAnswersList);
+            }
         }
         private void quizNotSelected()
         {
-            string message ="Zaznacz Quiz który chcesz rozwiązać";
+            string message ="Zaznacz Quiz który chcesz zedytować";
 ;
             MessageBox.Show(message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-        }
-        private void ResetButtonColors()
-        {
-            Button1Color = "LightGray";
-            Button2Color = "LightGray";
-            Button3Color = "LightGray";
-            Button4Color = "LightGray";
-        }
-        private string _button1Color;
-        public string Button1Color
-        {
-            get { return _button1Color; }
-            set { _button1Color = value; OnPropertyChanged(nameof(Button1Color)); }
-        }
-
-        private string _button2Color;
-        public string Button2Color
-        {
-            get { return _button2Color; }
-            set { _button2Color = value; OnPropertyChanged(nameof(Button2Color)); }
-        }
-
-        private string _button3Color;
-        public string Button3Color
-        {
-            get { return _button3Color; }
-            set { _button3Color = value; OnPropertyChanged(nameof(Button3Color)); }
-        }
-
-        private string _button4Color;
-        private int _currentQuestionForFrontIndex;
-
-        public string Button4Color
-        {
-            get { return _button4Color; }
-            set { _button4Color = value; OnPropertyChanged(nameof(Button4Color)); }
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

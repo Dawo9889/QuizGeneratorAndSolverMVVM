@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PierwszePodejscieDoQuizu.ViewModel"
         mc:Ignorable="d"
-        Title="Quiz" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="Edit Quiz" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Window.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="White" Offset="0.0"/>
@@ -48,6 +49,17 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="Gray"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -68,7 +80,7 @@
         </ListBox>
 
         <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-            <TextBlock x:Name="QuestionNrTextBlock" FontWeight="Bold" FontSize="20" Width="164"><Run Text="Pytanie nr"/><Run Text=" "/><Run Text="{Binding CurrentQuestionForFrontIndex}"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run Text="{Binding NumberOfQuestions}"/></TextBlock>
+            <TextBlock x:Name="QuestionNrTextBlock" FontWeight="Bold" FontSize="20" Width="164"><Run Text="Pytanie nr"/><Run Text=" "/><Run Text="{Binding CurrentQuestionForFrontIndex}"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run Text="{Binding NumberOfQuestions}"></Run></TextBlock>
         </StackPanel>
 
         <Button x:Name="SelectQuizButton" Grid.Row="2" Grid.Column="0" Content="Edytuj Quiz" Command="{Binding SelectQuizCommand}" CommandParameter="{Binding SelectedQuiz}" Margin="10,10,10,10" Click="SelectQuizButton_Click"/>
@@ -83,36 +95,42 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
 
-            <TextBlock x:Name="QuestionTextBlock" Text="{Binding CurrentQuestionAndAnswers.Question.Content}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+            <TextBox x:Name="QuestionTextBlock" Text="{Binding CurrentQuestionAndAnswers.Question.Content}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBox x:Name="answerTextBox1" Text="{Binding CurrentQuestionAndAnswers.Answers[0].Content, Mode=TwoWay}" 
+                         Background="{Binding Button1Color, Mode=TwoWay}"
+                         Margin="0,10,10,10"
+                         Height="30" Width="200"/>
+                    <CheckBox x:Name="answerCheckBox1" IsChecked="{Binding CurrentQuestionAndAnswers.Answers[0].IsCorrect, Mode=TwoWay}" Content="Correct" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBox x:Name="answerTextBox2" Text="{Binding CurrentQuestionAndAnswers.Answers[1].Content, Mode=TwoWay}" 
+                         Background="{Binding Button2Color, Mode=TwoWay}"
+                         Margin="0,10,10,10"
+                         Height="30" Width="200"/>
+                   
+                    <CheckBox x:Name="answerCheckBox2" IsChecked="{Binding CurrentQuestionAndAnswers.Answers[1].IsCorrect, Mode=TwoWay}" Content="Correct" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBox x:Name="answerTextBox3" Text="{Binding CurrentQuestionAndAnswers.Answers[2].Content, Mode=TwoWay}" 
+                         Background="{Binding Button3Color, Mode=TwoWay}"
+                         Margin="0,10,10,10"
+                         Height="30" Width="200"/>
+                    
+                    <CheckBox x:Name="answerCheckBox3" IsChecked="{Binding CurrentQuestionAndAnswers.Answers[2].IsCorrect, Mode=TwoWay}" Content="Correct" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBox x:Name="answerTextBox4" Text="{Binding CurrentQuestionAndAnswers.Answers[3].Content, Mode=TwoWay}" 
+                         Background="{Binding Button4Color, Mode=TwoWay}"
+                         Margin="0,10,10,10"
+                         Height="30" Width="200"/>
+                    
+                    <CheckBox x:Name="answerCheckBox4" IsChecked="{Binding CurrentQuestionAndAnswers.Answers[3].IsCorrect, Mode=TwoWay}" Content="Correct" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
 
-            <Button x:Name="answerButton1" Content="{Binding CurrentQuestionAndAnswers.Answers[0].Content}" 
-                    Background="{Binding Button1Color, Mode=TwoWay}"
-                    Command="{Binding SelectAnswerCommand}"
-                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[0].AnswerId}"
-                    Margin="0,10,0,10"
-                    Click="Button_Click"
-                    Height="30"/>
-            <Button x:Name="answerButton2" Content="{Binding CurrentQuestionAndAnswers.Answers[1].Content}" 
-                    Background="{Binding Button2Color, Mode=TwoWay}"
-                    Command="{Binding SelectAnswerCommand}"
-                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[1].AnswerId}"
-                    Margin="0,10,0,10"
-                    Click="Button_Click"
-                    Height="30"/>
-            <Button x:Name="answerButton3" Content="{Binding CurrentQuestionAndAnswers.Answers[2].Content}" 
-                    Background="{Binding Button3Color, Mode=TwoWay}"
-                    Command="{Binding SelectAnswerCommand}"
-                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[2].AnswerId}"
-                    Margin="0,10,0,10"
-                    Click="Button_Click"
-                    Height="30"/>
-            <Button x:Name="answerButton4" Content="{Binding CurrentQuestionAndAnswers.Answers[3].Content}" 
-                    Background="{Binding Button4Color, Mode=TwoWay}"
-                    Command="{Binding SelectAnswerCommand}"
-                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[3].AnswerId}"
-                    Margin="0,10,0,10"
-                    Click="Button_Click"
-                    Height="30"/>
         </StackPanel>
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.RowDefinitions>
@@ -123,7 +141,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1" x:Name="stackPanel2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,10,0,10" Width="Auto" Height="50">
-                <Button Width="155" Height="30"  x:Name="NextQuestionButton" Content="Następne pytanie" Command="{Binding NextQuestionCommand}" Margin="10"/>
+                <Button Width="155" Height="30"  x:Name="NextQuestionButton" Content="Następne pytanie" Margin="10" Click="NextQuestion_Click"/>
                 <Button Width="100" Height="30" x:Name="EndQuizButton" Content="Zakoncz Edycje" Command="{Binding ExitQuizCommand}" Margin="10" HorizontalAlignment="Center" Click="EndQuizButton_Click"
                         Background="Red"/>
             </StackPanel>

@@ -297,6 +297,13 @@ namespace QuizSolution.ViewModel
             }
             
         }
+        public void ExitQuizWindow()
+        {
+            OnQuizCompletedOrQuizNotSelected?.Invoke();
+            ShowResult();
+            ResetQuiz?.Invoke();
+            AnswerButtonVisibilityCollapsed?.Invoke();
+        }
         private void UpdateButtonColors()
         {
             Button1Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[0]) ? "Green" : "LightGray";

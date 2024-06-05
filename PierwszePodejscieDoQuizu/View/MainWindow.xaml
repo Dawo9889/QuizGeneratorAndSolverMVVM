@@ -6,19 +6,47 @@
         xmlns:local="clr-namespace:PierwszePodejscieDoQuizu"
         xmlns:vm ="clr-namespace:PierwszePodejscieDoQuizu.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" MinHeight="700" Width="1200" MinWidth="1200">
+        Title="MainWindow" Height="800" MinHeight="800" Width="1200" MinWidth="1200">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="White" Offset="0.0"/>
+            <GradientStop Color="Gray" Offset="1.0"/>
+        </LinearGradientBrush>
+    </Window.Background>
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <Style TargetType="{x:Type Button}">
+        <Style TargetType="Button">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Command" Value="{Binding Path=buttonPressed}"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Height" Value="50"/>
         </Style>
-
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="Gray"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </Window.Resources>
     <Grid>
@@ -52,20 +80,20 @@
             
                 
 
-                <Label Content="Nazwa quizu:"/>
+                <Label Content="Nazwa quizu:" Margin="10"/>
                 <TextBox
                 Margin="0, 0, 0, 10"
                 Height="80"
                 Text="{Binding NewQuizTitle}"
                 MaxLength="120"
                 IsEnabled="{Binding IsFieldsEnabled}"/>
-                <Label Content="Opis quizu:"/>
+                <Label Content="Opis quizu:" Margin="10"/>
                 <TextBox
                 Height="160"
                 Text="{Binding NewQuizDescription}"
                 MaxLength="240"
                 IsEnabled="{Binding IsFieldsEnabled}"/>
-                <Label Content="Kategoria quizu:"/>
+                <Label Content="Kategoria quizu:" Margin="10"/>
                 <TextBox
                     Margin="0, 0, 0, 10"
                     Height="80"
@@ -86,9 +114,9 @@
             <Button Grid.Row="3"
                 Content="Stwórz nowy quiz"
                 Command="{Binding AddNewQuizCommand}"
-                IsEnabled="{Binding IsFieldsEnabled}"/>
-            <Button Grid.Row="4" Content="Przejdź do Usuwania" Click="NavigateToDeleteWindows_Click" />
-            <Button Grid.Row="5" Content="Przejdź do Edycji" Click="NavigateToEditWindow_Click" />
+                IsEnabled="{Binding IsFieldsEnabled}" Margin="10"/>
+            <Button Grid.Row="4" Content="Przejdź do Usuwania" Click="NavigateToDeleteWindows_Click" Margin="10" />
+            <Button Grid.Row="5" Content="Przejdź do Edycji" Click="NavigateToEditWindow_Click" Margin="10" />
 
 
 
@@ -201,10 +229,10 @@
                 Grid.Row="1">
                 <Button 
                     Content="DODAJ"
-                    Command="{Binding AddNewQuestionCommand}"/>
+                    Command="{Binding AddNewQuestionCommand}" Margin="10"/>
                 <Button
                     Content="ZAPISZ DO BAZY"
-                    Command="{Binding SaveToDatabaseCommand}"
+                    Command="{Binding SaveToDatabaseCommand}" Margin="10"
                     />
             </StackPanel>
         </Grid>

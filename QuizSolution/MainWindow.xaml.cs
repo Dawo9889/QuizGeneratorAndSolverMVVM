@@ -17,6 +17,10 @@ namespace QuizSolution
             InitializeComponent();
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
+            if (_viewModel != null)
+            {
+                Closing += EditWindow_Closing;
+            }
 
             ((MainViewModel)DataContext) .OnQuizCompletedOrQuizNotSelected += OnQuizCompletedOrQuizNotSelected;
             ((MainViewModel)DataContext).BeforeQuizCompleted += BeforeQuizCompleted;
@@ -46,8 +50,6 @@ namespace QuizSolution
                 clickedButton.Background = Brushes.LightBlue;
             }
         }
-
-
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             _elapsedTime = DateTime.Now - _startTime;
@@ -111,6 +113,18 @@ namespace QuizSolution
             TimerTextBlock.Visibility = Visibility.Visible;
             TimerTextBlockTitle.Visibility = Visibility.Visible;
             QuestionNrTextBlock.Visibility = Visibility.Visible;
+        }
+        private void EditWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var result = MessageBox.Show("Czy na pewno chcesz zakończyć quiz?", "Zamknięcie okna", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                _viewModel?.ExitQuizWindow();
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void EndQuizButton_Click(object sender, RoutedEventArgs e)
