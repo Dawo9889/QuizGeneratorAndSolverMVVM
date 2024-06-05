@@ -26,14 +26,14 @@ namespace PierwszePodejscieDoQuizu
         private void NavigateToDeleteWindows_Click(object sender, RoutedEventArgs e)
         {
             // Tutaj umieść kod nawigacji do DeleteWindows
-            DeleteWindows deleteWindows = new DeleteWindows();
+            PierwszePodejscieDoQuizu.View.DeleteWindows deleteWindows = new PierwszePodejscieDoQuizu.View.DeleteWindows();
             deleteWindows.Show(); // Pokaż nowe okno DeleteWindows
             this.Close(); // Zamknij obecne okno MainWindow
         }
 
         private void NavigateToEditWindow_Click(object sender, RoutedEventArgs e)
         {
-            EditWindow editWindow = new EditWindow();
+            PierwszePodejscieDoQuizu.View.EditWindow editWindow = new PierwszePodejscieDoQuizu.View.EditWindow();
             editWindow.Show();
             this.Close();
         }
