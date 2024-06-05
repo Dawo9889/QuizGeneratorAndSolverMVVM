@@ -30,5 +30,12 @@ namespace PierwszePodejscieDoQuizu
             deleteWindows.Show(); // Pokaż nowe okno DeleteWindows
             this.Close(); // Zamknij obecne okno MainWindow
         }
+
+        private void NavigateToEditWindow_Click(object sender, RoutedEventArgs e)
+        {
+            EditWindow editWindow = new EditWindow();
+            editWindow.Show();
+            this.Close();
+        }
     }
 }
