@@ -14,6 +14,7 @@ using PierwszePodejscieDoQuizu.Database.Entities;
 
 namespace PierwszePodejscieDoQuizu.ViewModel
 {
+    public class EditWindowViewModel : INotifyPropertyChanged
     {
         private QuizRepository _quizRepository;
         private ObservableCollection<Database.Entities.QuestionAndAnswers> _questionAndAnswersList;
