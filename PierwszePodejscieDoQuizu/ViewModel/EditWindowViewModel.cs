@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PropertyChanged;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -12,7 +14,6 @@ using PierwszePodejscieDoQuizu.Database.Entities;
 
 namespace PierwszePodejscieDoQuizu.ViewModel
 {
-    public class EditWindowViewModel : INotifyPropertyChanged
     {
         private QuizRepository _quizRepository;
         private ObservableCollection<Database.Entities.QuestionAndAnswers> _questionAndAnswersList;
