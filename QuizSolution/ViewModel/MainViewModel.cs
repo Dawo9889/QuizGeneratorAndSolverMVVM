@@ -21,6 +21,7 @@ namespace QuizSolution.ViewModel
         private QuestionAndAnswers _currentQuestionAndAnswers;
         private int _currentQuestionIndex;
         private int Score;
+        private int _numberOfQuestions;
         public int QuestionNumber { get; set; }
         public Action OnQuizCompletedOrQuizNotSelected { get; set; }
         public Action BeforeQuizCompleted { get; set; }
@@ -32,6 +33,7 @@ namespace QuizSolution.ViewModel
             ResetButtonColors();
             _quizRepository = new QuizRepository();
             LoadQuizzes();
+            CurrentQuestionForFrontIndex = 1;
         }
         private TimeSpan _elapsedTime;
         public TimeSpan ElapsedTime
@@ -42,6 +44,15 @@ namespace QuizSolution.ViewModel
                 _elapsedTime = value;
                 OnPropertyChanged(nameof(ElapsedTime));
             }
+        }
+        public int NumberOfQuestions
+        {
+            get => _numberOfQuestions;
+            set
+            {
+                _numberOfQuestions = value;
+                OnPropertyChanged();
+            } 
         }
 
         public ObservableCollection<QuestionAndAnswers> QuestionAndAnswersList
@@ -72,6 +83,15 @@ namespace QuizSolution.ViewModel
                 OnPropertyChanged();
             }
         }
+        public int CurrentQuestionForFrontIndex
+        {
+            get => _currentQuestionForFrontIndex;
+            set
+            {
+                _currentQuestionForFrontIndex = value;
+                OnPropertyChanged();
+            }
+        }
         private ICommand _selectQuizCommand;
 
         public ICommand SelectQuizCommand
@@ -91,12 +111,13 @@ namespace QuizSolution.ViewModel
         {
             if (_selectedQuiz != null)
             {
-                Score = 0;
-                QuestionNumber = 0;
-                CurrentQuestionIndex = 0;
-                AnswerButtonVisibility?.Invoke();
-                ResetButtonColors();
-                LoadQuestions();
+               Score = 0;
+               QuestionNumber = 0;
+               CurrentQuestionIndex = 0;
+               AnswerButtonVisibility?.Invoke();
+               ResetButtonColors();
+               LoadQuestions();
+               if (_questionAndAnswersList.Count == 1) { BeforeQuizCompleted?.Invoke(); }
             }
             else
             {
@@ -155,12 +176,12 @@ namespace QuizSolution.ViewModel
                         Answers = new ObservableCollection<Answer>(question.Answers)
                     });
                 }
-
                 if (QuestionAndAnswersList.Any())
                 {
                     CurrentQuestionIndex = 0;
                     CurrentQuestionAndAnswers = QuestionAndAnswersList[0];
                 }
+                NumberOfQuestions = QuestionAndAnswersList.Count;
             }
         }
         private ICommand _selectAnswerCommand;
@@ -231,10 +252,11 @@ namespace QuizSolution.ViewModel
                 }
 
                 SelectedAnswers.Clear();
-
+                
                 if (CurrentQuestionIndex < _questionAndAnswersList.Count - 1)
                 {
                     CurrentQuestionIndex++;
+                    CurrentQuestionForFrontIndex++;
                     CurrentQuestionAndAnswers = _questionAndAnswersList[CurrentQuestionIndex];
                     ResetButtonColors();
                     if (CurrentQuestionIndex == _questionAndAnswersList.Count - 1)
@@ -255,10 +277,25 @@ namespace QuizSolution.ViewModel
         }
         private void ExitQuiz(object parameter)
         {
-            OnQuizCompletedOrQuizNotSelected?.Invoke();
-            ShowResult();
-            ResetQuiz?.Invoke();
-            AnswerButtonVisibilityCollapsed?.Invoke();
+            if (CurrentQuestionIndex < _questionAndAnswersList.Count - 1)
+            {
+                var Result = MessageBox.Show("Czy jestes pewny, że chcesz zakończyć ten quiz?", "Jesteś pewny?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (Result == MessageBoxResult.Yes)
+                {
+                    OnQuizCompletedOrQuizNotSelected?.Invoke();
+                    ShowResult();
+                    ResetQuiz?.Invoke();
+                    AnswerButtonVisibilityCollapsed?.Invoke();
+                }
+            }
+            else
+            {
+                OnQuizCompletedOrQuizNotSelected?.Invoke();
+                ShowResult();
+                ResetQuiz?.Invoke();
+                AnswerButtonVisibilityCollapsed?.Invoke();
+            }
+            
         }
         private void UpdateButtonColors()
         {
@@ -315,6 +352,8 @@ namespace QuizSolution.ViewModel
         }
 
         private string _button4Color;
+        private int _currentQuestionForFrontIndex;
+
         public string Button4Color
         {
             get { return _button4Color; }
