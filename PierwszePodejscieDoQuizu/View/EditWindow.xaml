@@ -3,10 +3,130 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PierwszePodejscieDoQuizu.View"
         mc:Ignorable="d"
-        Title="EditWindow" Height="450" Width="800">
+        Title="Quiz" Height="450" Width="800" MinHeight="450" MinWidth="800">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="White" Offset="0.0"/>
+            <GradientStop Color="Gray" Offset="1.0"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Command" Value="{Binding Path=buttonPressed}"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="White" Offset="0.0" />
+                        <GradientStop Color="Gray" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="125"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="QuizListBox" ItemsSource="{Binding Quizzes}" SelectedItem="{Binding SelectedQuiz}" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+            <TextBlock x:Name="QuestionNrTextBlock" FontWeight="Bold" FontSize="20" Width="164"><Run Text="Pytanie nr"/><Run Text=" "/><Run Text="{Binding CurrentQuestionForFrontIndex}"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run Text="{Binding NumberOfQuestions}"/></TextBlock>
+        </StackPanel>
+
+        <Button x:Name="SelectQuizButton" Grid.Row="2" Grid.Column="0" Content="Edytuj Quiz" Command="{Binding SelectQuizCommand}" CommandParameter="{Binding SelectedQuiz}" Margin="10,10,10,10" Click="SelectQuizButton_Click"/>
+
+        <StackPanel x:Name="stackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10" RenderTransformOrigin="0.5,0.5">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.235"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="1.35"/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+
+            <TextBlock x:Name="QuestionTextBlock" Text="{Binding CurrentQuestionAndAnswers.Question.Content}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+
+            <Button x:Name="answerButton1" Content="{Binding CurrentQuestionAndAnswers.Answers[0].Content}" 
+                    Background="{Binding Button1Color, Mode=TwoWay}"
+                    Command="{Binding SelectAnswerCommand}"
+                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[0].AnswerId}"
+                    Margin="0,10,0,10"
+                    Click="Button_Click"
+                    Height="30"/>
+            <Button x:Name="answerButton2" Content="{Binding CurrentQuestionAndAnswers.Answers[1].Content}" 
+                    Background="{Binding Button2Color, Mode=TwoWay}"
+                    Command="{Binding SelectAnswerCommand}"
+                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[1].AnswerId}"
+                    Margin="0,10,0,10"
+                    Click="Button_Click"
+                    Height="30"/>
+            <Button x:Name="answerButton3" Content="{Binding CurrentQuestionAndAnswers.Answers[2].Content}" 
+                    Background="{Binding Button3Color, Mode=TwoWay}"
+                    Command="{Binding SelectAnswerCommand}"
+                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[2].AnswerId}"
+                    Margin="0,10,0,10"
+                    Click="Button_Click"
+                    Height="30"/>
+            <Button x:Name="answerButton4" Content="{Binding CurrentQuestionAndAnswers.Answers[3].Content}" 
+                    Background="{Binding Button4Color, Mode=TwoWay}"
+                    Command="{Binding SelectAnswerCommand}"
+                    CommandParameter="{Binding CurrentQuestionAndAnswers.Answers[3].AnswerId}"
+                    Margin="0,10,0,10"
+                    Click="Button_Click"
+                    Height="30"/>
+        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="1" x:Name="stackPanel2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,10,0,10" Width="Auto" Height="50">
+                <Button Width="155" Height="30"  x:Name="NextQuestionButton" Content="Następne pytanie" Command="{Binding NextQuestionCommand}" Margin="10"/>
+                <Button Width="100" Height="30" x:Name="EndQuizButton" Content="Zakoncz Edycje" Command="{Binding ExitQuizCommand}" Margin="10" HorizontalAlignment="Center" Click="EndQuizButton_Click"
+                        Background="Red"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

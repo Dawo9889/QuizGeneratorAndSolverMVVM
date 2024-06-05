@@ -25,6 +25,18 @@ namespace PierwszePodejscieDoQuizu.Database
 
             optionsBuilder.UseSqlite($"Filename={databasePath}");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Quiz>()
+                        .HasMany(q => q.Questions)
+                        .WithOne(q => q.Quiz)
+                        .HasForeignKey(q => q.QuizId);
+
+            modelBuilder.Entity<Question>()
+                        .HasMany(q => q.Answers)
+                        .WithOne(a => a.Question)
+                        .HasForeignKey(a => a.QuestionId);
+        }
     }
 
 }
