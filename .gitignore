@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PierwszePodejscieDoQuizu/View/EditWindow.xaml
+/PierwszePodejscieDoQuizu/View/EditWindow.xaml.cs
+/PierwszePodejscieDoQuizu/ViewModel/EditWindowViewModel.cs
+/.gitignore
