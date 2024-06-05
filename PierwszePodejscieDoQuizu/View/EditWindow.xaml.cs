@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PierwszePodejscieDoQuizu.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace PierwszePodejscieDoQuizu.View
         public EditWindow()
         {
             InitializeComponent();
+            DataContext = new EditWindowViewModel();
         }
     }
 }
