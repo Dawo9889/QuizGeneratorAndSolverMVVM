@@ -71,12 +71,14 @@ namespace QuizSolution
                 TimerTextBlock.Visibility = Visibility.Collapsed;
                 TimerTextBlockTitle.Visibility = Visibility.Collapsed;
                 QuestionNrTextBlock.Visibility = Visibility.Collapsed;
+                NextQuestionButton.Background = Brushes.Gray;
             });
         }
 
         private void BeforeQuizCompleted()
         {
             NextQuestionButton.Dispatcher.Invoke(() => NextQuestionButton.Content = "Zakończ quiz");
+            NextQuestionButton.Background = Brushes.Red;
             EndQuizButton.Visibility = Visibility.Collapsed;
         }
 
@@ -109,6 +111,11 @@ namespace QuizSolution
             TimerTextBlock.Visibility = Visibility.Visible;
             TimerTextBlockTitle.Visibility = Visibility.Visible;
             QuestionNrTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void EndQuizButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
