@@ -119,7 +119,7 @@ namespace QuizSolution
             var result = MessageBox.Show("Czy na pewno chcesz zakończyć quiz?", "Zamknięcie okna", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                _viewModel?.ExitQuizWindow();
+                _viewModel?.ExitQuizWindowButton();
             }
             else if (result == MessageBoxResult.Cancel)
             {

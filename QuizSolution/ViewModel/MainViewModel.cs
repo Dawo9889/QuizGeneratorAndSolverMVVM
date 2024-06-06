@@ -304,6 +304,12 @@ namespace QuizSolution.ViewModel
             ResetQuiz?.Invoke();
             AnswerButtonVisibilityCollapsed?.Invoke();
         }
+        public void ExitQuizWindowButton()
+        {
+            OnQuizCompletedOrQuizNotSelected?.Invoke();
+            ResetQuiz?.Invoke();
+            AnswerButtonVisibilityCollapsed?.Invoke();
+        }
         private void UpdateButtonColors()
         {
             Button1Color = SelectedAnswers.Contains(CurrentQuestionAndAnswers.Answers[0]) ? "Green" : "LightGray";
