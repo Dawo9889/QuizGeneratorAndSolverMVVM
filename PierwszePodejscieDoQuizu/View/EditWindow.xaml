@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PierwszePodejscieDoQuizu.ViewModel"
         mc:Ignorable="d"
-        Title="Edit Quiz" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="Edit Quiz" Height="550" Width="800" MinHeight="550" MinWidth="800">
     <Window.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="White" Offset="0.0"/>
@@ -82,9 +82,11 @@
         <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
             <TextBlock x:Name="QuestionNrTextBlock" FontWeight="Bold" FontSize="20" Width="164"><Run Text="Pytanie nr"/><Run Text=" "/><Run Text="{Binding CurrentQuestionForFrontIndex}"/><Run Text=" "/><Run Text="/"/><Run Text=" "/><Run Text="{Binding NumberOfQuestions}"></Run></TextBlock>
         </StackPanel>
-
-        <Button x:Name="SelectQuizButton" Grid.Row="2" Grid.Column="0" Content="Edytuj Quiz" Command="{Binding SelectQuizCommand}" CommandParameter="{Binding SelectedQuiz}" Margin="10,10,10,10" Click="SelectQuizButton_Click"/>
-
+        <StackPanel Grid.Row="2">
+            <Button x:Name="SelectQuizButton" Grid.Row="2" Grid.Column="0" Content="Edytuj Quiz" Command="{Binding SelectQuizCommand}" CommandParameter="{Binding SelectedQuiz}" Margin="10,10,10,10" Click="SelectQuizButton_Click"/>
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Powrót" Click="NavigateToMainWindow_Click" Margin="10" HorizontalAlignment="Right"/>
+        </StackPanel>
+        
         <StackPanel x:Name="stackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10" RenderTransformOrigin="0.5,0.5">
             <StackPanel.RenderTransform>
                 <TransformGroup>
