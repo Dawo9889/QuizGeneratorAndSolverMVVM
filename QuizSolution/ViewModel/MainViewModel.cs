@@ -8,7 +8,6 @@ using System.Windows.Input;
 using QuizSolution.Database;
 using QuizSolution.Model;
 using System.Windows;
-
 namespace QuizSolution.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged

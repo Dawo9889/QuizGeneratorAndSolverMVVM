@@ -88,8 +88,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-
-        <TextBox Grid.Row="1" Grid.Column="0" Margin="10" Height="30" Text="{Binding QuizIdHelper, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="20" />
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <Label FontWeight="Bold"  VerticalAlignment="Center">Podaj QuizID w celu usunięcia quizu: </Label>    
+        <TextBox Margin="10" Width="100" Height="30" Text="{Binding QuizIdHelper, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="20" />
+        </StackPanel>
 
         <Button Grid.Column="1" Grid.Row="1" Width="100" Height="30" Content="Usuń" Command="{Binding DeleteQuizCommand}" Margin="10" />
 

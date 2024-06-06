@@ -33,5 +33,6 @@ namespace PierwszePodejscieDoQuizu.View
             mainWindow.Show();
             this.Close();
         }
+
     }
 }
