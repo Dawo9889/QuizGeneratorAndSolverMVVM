@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PierwszePodejscieDoQuizu", "PierwszePodejscieDoQuizu\PierwszePodejscieDoQuizu.csproj", "{42FC496C-E75A-4DB3-850C-6A3F4DF8DBD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizCreate", "PierwszePodejscieDoQuizu\QuizCreate.csproj", "{42FC496C-E75A-4DB3-850C-6A3F4DF8DBD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizSolution", "QuizSolution\QuizSolution.csproj", "{2E2B0E52-7FF3-4EC5-B401-9ECBF7A385C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizSolution", "QuizSolution\QuizSolution.csproj", "{2E2B0E52-7FF3-4EC5-B401-9ECBF7A385C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
